@@ -1,5 +1,6 @@
 import sys
 
+import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGridLayout, QWidget, QVBoxLayout, QScrollArea
 from src.converting.SGY_reader import *
@@ -26,7 +27,6 @@ win.show()
 '''
 
 # Для визуализации объектов
-
 pg.setConfigOptions(imageAxisOrder='col-major')
 
 app = QtWidgets.QApplication(sys.argv)
@@ -34,13 +34,12 @@ win = QtWidgets.QMainWindow()
 
 win.resize(1000, 700)
 
+amp_field = np.flip(amp_field, axis=2)
 objects = create_objects(amp_field, num_traces=50, num_samples=100)
-grid = visualize_objects(objects, False)
+grid = visualize_objects(objects[:100], False)
 
 win.scroll = QScrollArea()
-win.widget = QWidget()
-win.vbox = grid
-win.widget.setLayout(win.vbox)
+win.widget = grid
 win.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 win.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 win.scroll.setWidgetResizable(True)
